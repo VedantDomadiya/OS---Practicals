@@ -1,0 +1,230 @@
+#Practical 3
+#AIM: Write a shell script to generate marksheet of a student. Take 3 subjects,
+#calculate and display total marks, percentage and Class obtained by the student.
+
+echo "Student Marksheet"
+echo "***********************"
+echo "Enter the marks of OS"
+read os
+echo "Enter the marks of DSA"
+read dsa
+echo "Enter the marks of CJP"
+read cjp
+echo "***********************"
+
+total=`expr $os + $dsa + $cjp`
+per=`expr $total / 3`
+
+echo "Total marks : "$total
+echo "Total percentage : "$per
+
+if [ $per -ge 60 ]
+then
+echo "Class: First Class Distinction"
+elif [ $per -ge 50 ]
+then
+echo "Class: First Class"
+elif [ $per -ge 40 ]
+then
+echo "Class: Second Class Distinction"
+else
+echo "Class: Fail"
+fi
+
+
+#---------------------------------------------------------------------
+
+#Practical 4
+#AIM: Write a shell script to find factorial of given number n.
+
+fact=1
+read -p "Enter a Number to find its factorial : " n
+fact=1
+
+if [ $n -le 0 ]
+    then
+    echo "Invalid Number"
+    exit
+fi
+
+a=$n
+
+while [ $a -ge 1 ]
+do
+    fact=`expr $fact \* $a`
+    a=`expr $a - 1`
+done
+echo "Factorial of $n is : $fact"
+
+#-----------------------------------------------------------------------
+
+#Practical 5
+
+#AIM: Write a shell script which will accept a number b and display first n prime numbers as output.
+
+read -p "Enter the value of n " n
+m=2
+
+while [ $m -le $n ]
+do
+    flag=0
+    i=2
+    while [ $i -le `expr $m / 2` ]
+    do
+        if [ `expr $m % $i` -eq 0 ]
+        then
+            flag=1
+            break
+        fi
+        i=`expr $i + 1`
+    done
+    if [ $flag -eq 0 ]
+    then
+        echo $m
+    fi
+    m=`expr $m + 1`
+done
+
+#---------------------------------------------------------------------
+
+#Practical 6
+
+#AIM: Write a shell script which will generate first n Fibonacci numbers like: 1, 1, 2, 3, 5, 13,...
+
+read -p "Enter the value of n " n
+x=0
+y=1
+i=2
+
+echo "Fibonacci sequence upto $n is "
+echo $x
+echo $y
+
+while [ $i -le $n ]
+do
+    i=`expr $i + 1`
+    z=`expr $x + $y`
+    echo $z
+    x=$y
+    y=$z
+done
+
+#--------------------------------------------------------------------
+
+#Practical 7
+#Aim : Display Calender, today's date, username, name on xy position and your terminal number
+
+echo "Select Anyone Option"
+echo "**************************************************"
+echo "1)Display Calender of current month"
+echo "2)Display Today's Date and Time"
+echo "3)Display Username who are currently logged in"
+echo "4)Display your name on given x,y position"
+echo "5)Display your terminal Number"
+echo "6)Exit"
+echo "Enter your choice"
+read choice
+
+case $choice in
+1)cal;;
+2)date;;
+3)who;;
+4)row=$(tput lines)
+col=$(tput cols)
+echo "Terminal windows has Rows = $row and Columns = $col"
+echo "Enter desired X,Y position"
+echo "X position="
+read x
+echo "Y position="
+read y
+echo "Enter the name"
+read name
+tput cup $x $y
+echo "$name";;
+5)tty;;
+6)echo "Exit";;
+*)echo "Enter Valid Choice";;
+esac
+
+#---------------------------------------------------------------------
+
+#Practical 8
+
+#AIM: Write a shell script to check entered string is palindrome or not..
+
+echo "Enter the string to check: "
+read str
+len=`echo $str | wc -c`
+len=`expr $len - 1`
+i=1
+j=`expr $len / 2`
+while test $i -le $j
+do
+k=`echo $str | cut -c $i`
+l=`echo $str | cut -c $len`
+if test $k != $l
+then
+echo "String is not Palindrome"
+exit
+fi
+i=`expr $i + 1`
+len=`expr $len - 1`
+done
+echo "String is Palindrome"
+
+#-------------------------------------------------------------------------
+
+#Practical 9
+#AIM: Write a shell script to input two no’s from the user and perform addition, subtraction, multiplication, and division
+
+echo "Enter the first number"
+read a
+echo "Enter the second number"
+read b
+echo "Enter the operator:"
+echo -e "Addition: + \nSubtraction: - \nMultiplication: x \nDivision: /"
+read op
+case $op in
++) c=`expr $a + $b`
+echo "Sum of $a and $b is $c";;
+-) c=`expr $a - $b`
+echo "Difference of $a and $b is $c";;
+x) c=`expr $a \* $b`
+echo "Product of $a and $b is $c";;
+/) c=`expr $a / $b`
+echo "Division of $a and $b is $c";;
+*) echo "Invalid Operator"
+exit;;
+esac
+
+
+
+
+#AIM: Any integer is input through the keyboard. Write a shell script to find out whether it is an odd number or even number.
+
+read -p "Enter a number: " number
+
+if [ $((number%2)) -eq 0 ]
+    then
+    echo "Number is even."
+    else
+    echo "Number is odd."
+fi
+
+
+
+#AIM: Write a shell script which receives any year form the keyboard and determines whether the year is a leap year or not
+
+echo "Enter Year :"
+read y
+year=$y
+y=`expr $y % 4`
+if [ $y -eq 0 ]
+then
+echo "$year is Leap Year!"
+else
+echo "$year is not a Leap Year!"
+fi
+
+
+#-----------------------------------------------------------------------------------------------
