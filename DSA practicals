@@ -1,0 +1,627 @@
+//Practical 1 A
+//W.A.P. to implement Bubble sort
+
+#include<stdio.h>
+ 
+void printArray(int* A, int n){
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d ", A[i]);
+    }
+    printf("\n");
+}
+void bubbleSort(int *A, int n){
+    int temp;
+    int isSorted = 0;
+    for (int i = 0; i < n-1; i++) // For number of pass
+    {
+        printf("Working on pass number %d\n", i+1); 
+        for (int j = 0; j <n-1-i ; j++) // For comparison in each pass
+        {
+            if(A[j]>A[j+1]){
+                temp = A[j];
+                A[j] = A[j+1];
+                A[j+1] = temp; 
+            }
+        }  
+    } 
+}                                                                                                               //BubbleSort
+ 
+void bubbleSortAdaptive(int *A, int n){
+    int temp;
+    int isSorted = 0;
+    for (int i = 0; i < n-1; i++) // For number of pass
+    {
+        printf("Working on pass number %d\n", i+1);
+        isSorted = 1;
+        for (int j = 0; j <n-1-i ; j++) // For comparison in each pass
+        {
+            if(A[j]>A[j+1]){
+                temp = A[j];
+                A[j] = A[j+1];
+                A[j+1] = temp;
+                isSorted = 0;
+            }
+        } 
+        if(isSorted){
+            return;
+        }
+    } 
+}
+ 
+int main(){
+    // int A[] = {12, 54, 65, 7, 23, 9};
+    int A[] = {1, 2, 5, 6, 12, 54, 625, 7, 23, 9, 987};
+    // int A[] = {1, 2, 3, 4, 5, 6};
+    int n = 11;
+    printArray(A, n); // Printing the array before sorting
+    bubbleSort(A, n); // Function to sort the array
+    printArray(A, n); // Printing the array before sorting
+    return 0;
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Practical 1 b
+//W.A.P. implement insertion sort algorithm
+
+#include<stdio.h>
+
+void printArray(int* A, int n){
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d ", A[i]);
+    }
+    printf("\n");
+}
+
+void insertionSort(int *A, int n){
+    int key, j;
+    // Loop for passes
+    for (int i = 1; i <= n-1; i++)
+    {
+        key = A[i];
+        j = i-1;
+        // Loop for each pass
+        while(j>=0 && A[j] > key){
+            A[j+1] = A[j];
+            j--;
+        }
+        A[j+1] = key;
+    }
+}
+                                                                                                              //InsertionSort
+int main(){
+   // -1   0    1   2   3   4   5
+   //      12,| 54, 65, 07, 23, 09 --> i=1, key=54, j=0
+   //      12,| 54, 65, 07, 23, 09 --> 1st pass done (i=1)!
+
+   //      12, 54,| 65, 07, 23, 09 --> i=2, key=65, j=1
+   //      12, 54,| 65, 07, 23, 09 --> 2nd pass done (i=2)!
+
+   //      12, 54, 65,| 07, 23, 09 --> i=3, key=7, j=2
+   //      12, 54, 65,| 65, 23, 09 --> i=3, key=7, j=1
+   //      12, 54, 54,| 65, 23, 09 --> i=3, key=7, j=0
+   //      12, 12, 54,| 65, 23, 09 --> i=3, key=7, j=-1
+   //      07, 12, 54,| 65, 23, 09 --> i=3, key=7, j=-1--> 3rd pass done (i=3)!
+
+   // Fast forwarding and 4th and 5th pass will give:
+   //      07, 12, 54, 65,| 23, 09 --> i=4, key=23, j=3
+   //      07, 12, 23, 54,| 65, 09 --> After the 4th pass
+
+   //      07, 12, 23, 54, 65,| 09 --> i=5, key=09, j=4
+   //      07, 09, 12, 23, 54, 65| --> After the 5th pass 
+    
+    int A[] = {12, 54, 65, 7, 23, 9};
+    int n = 6;
+    printArray(A, n);
+    insertionSort(A, n);
+    printArray(A, n);
+    return 0;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Practical 1c: 
+//W.A.P. to implement selection sort
+
+#include<stdio.h>
+
+void printArray(int* A, int n){
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d ", A[i]);
+    }
+    printf("\n");
+}
+
+void selectionSort(int *A, int n){
+    int indexOfMin, temp;
+    printf("Running Selection sort...\n");
+    for (int i = 0; i < n-1; i++)
+    {
+        indexOfMin = i;
+        for (int j = i+1; j < n; j++)
+        {
+            if(A[j] < A[indexOfMin]){
+                indexOfMin = j;
+            }
+        }
+        // Swap A[i] and A[indexOfMin]
+        temp = A[i];
+        A[i] = A[indexOfMin];
+        A[indexOfMin] = temp;
+    }
+}
+                                                                                                            //SelectionSort
+int main(){
+    // Input Array (There will be total n-1 passes. 5-1 = 4 in this case!)
+    //  00  01  02  03  04
+    // |03, 05, 02, 13, 12
+
+    // After first pass
+    //  00  01  02  03  04
+    //  02,|05, 03, 13, 12
+
+    // After second pass
+    // 00  01  02  03  04
+    // 02, 03,|05, 13, 12
+
+    // After third pass
+    // 00  01  02  03  04
+    // 02, 03, 05,|13, 12
+
+    // After fourth pass
+    // 00  01  02  03  04
+    // 02, 03, 05, 12,|13
+
+    int A[] = {3, 5, 2, 13, 12};
+    int n = 5;
+    printArray(A, n);
+    selectionSort(A, n);
+    printArray(A, n);
+
+    return 0;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Practical 2: 
+//W.A.P. implement Quick sort
+
+
+#include <stdio.h>
+
+int Partition(int *A, int start, int end)
+{
+    int temp,temp1;
+    int Pivot = A[start];
+    int i = start;
+    int j = end;
+
+    while (i < j)
+    {
+        while (A[i] < Pivot)
+        {
+            i++;
+        }
+        while (A[j] > Pivot)
+        {
+            j--;
+        }
+        if (i < j)
+        {
+            // swapping A[i] and A[j]
+            temp = A[i];
+            A[i] = A[j];
+            A[j] = temp;
+        }
+    }
+    //swapping A[j] and pivot
+    temp1 = A[j];
+    A[j] = Pivot;
+    Pivot = temp1;
+
+    return j;
+}
+
+QuickSort(int *A,int start,int end)
+{
+    if (start < end)
+    {
+        int location = Partition(A, start, end);
+        QuickSort(A , start, location-1);
+        QuickSort(A , location+1, end);
+    }
+}
+                                                                                                                   //QuickSort
+void PrintArray(int *A, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d ", A[i]);
+    }
+    printf("\n");
+}
+
+int main()
+{
+
+    int A[] = {3, 5, 75, 78, 23, 43, 57, 32};
+    int n = 8;
+    int start, end;
+    PrintArray(A, n);
+    QuickSort(A, 0, n-1);
+    PrintArray(A, n);
+
+    return 0;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Practical 3a and 3b: 
+//W.A.P. implement linear and Binary search
+
+#include<stdio.h>
+ 
+int linearSearch(int arr[], int size, int element){
+    for (int i = 0; i < size; i++)
+    {
+        if(arr[i]==element){
+            return i;
+        }
+    }
+    return -1;
+}
+ 
+int binarySearch(int arr[], int size, int element){
+    int low, mid, high;
+    low = 0;
+    high = size-1;
+    // Keep searching until low <= high
+    while(low<=high){
+        mid = (low + high)/2;
+        if(arr[mid] == element){
+            return mid;
+        }
+        if(arr[mid]<element){
+            low = mid+1;
+        }
+        else{
+            high = mid -1;
+        }
+    } 
+    return -1;
+                                                                                                      //Linear Search and Binary Search
+}
+ 
+int main(){
+    // Unsorted array for linear search
+    // int arr[] = {1,3,5,56,4,3,23,5,4,54634,56,34};
+    // int size = sizeof(arr)/sizeof(int);
+ 
+    // Sorted array for binary search
+    int arr[] = {1,3,5,56,64,73,123,225,444};
+    int size = sizeof(arr)/sizeof(int);
+    int element = 444;
+    int searchIndex = binarySearch(arr, size, element);
+    printf("The element %d was found at index %d \n", element, searchIndex);
+    return 0;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//Practical 4: W.A.P. to Implement stack with following operations
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+
+#define MAX 3 // Altering this value changes size of stack created
+
+int st[MAX], top = -1;
+
+void push(int st[], int val);
+int pop(int st[]);
+int peek(int st[]);
+void display(int st[]);
+
+int main(int argc, char *argv[])
+{
+    int val, option;
+    do
+    {
+        printf("\n *****MAIN MENU*****");
+        printf("\n 1. PUSH");
+        printf("\n 2. POP");
+        printf("\n 3. PEEK");
+        printf("\n 4. DISPLAY");
+        printf("\n 5. EXIT");
+        printf("\n Enter your option: ");
+        scanf("%d", &option);
+        switch (option)
+
+        {
+        case 1:
+            printf("\n Enter the number to be pushed on stack: ");
+            scanf("%d", &val);
+            push(st, val);
+            break;
+
+        case 2:
+            val = pop(st);
+            if (val != -1)
+                printf("\n The value deleted from stack is: %d", val);
+            break;
+
+        case 3:
+            val = peek(st);
+            if (val != -1)
+                printf("\n The value stored at top of stack is: %d", val);
+            break;
+                                                                                                                     //Stack Operation
+        case 4:
+            display(st);
+            break;
+
+        } // end of switch
+
+    } while (option != 5);
+
+    return 0;
+} // end of main ()
+
+void push(int st[], int val)
+
+{
+    if (top == MAX - 1)
+    {
+        printf("\n STACK OVERFLOW");
+    }
+    else
+    {
+        top++;
+        st[top] = val;
+    }
+}
+
+int pop(int st[])
+{
+    int val;
+    if (top == -1)
+    {
+        printf("\n STACK UNDERFLOW");
+        return -1;
+    }
+    else
+    {
+        val = st[top];
+        top--;
+        return val;
+    }
+}
+
+void display(int st[])
+{
+    int i;
+    if (top == -1)
+    {
+        printf("\n STACK IS EMPTY");
+    }
+    else
+    {
+        for (i = top; i >= 0; i--)
+
+            printf("\n %d", st[i]);
+
+        printf("\n"); // Added for formatting purposes
+    }
+}
+
+int peek(int st[])
+{
+    if (top == -1)
+    {
+        printf("\n STACK IS EMPTY");
+        return -1;
+    }
+    else
+        return (st[top]);
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//practical 5
+//W.A.P. to  IMPLEMENT SIMPLE QUEUE WITH INSERT, DELETE AND DISPLAY OPERATIONS
+
+#include <stdio.h>
+#define MAX 20
+#include<stdlib.h>
+int queue_array[MAX];
+int rear = - 1;
+int front = - 1;
+void insert()
+{
+      int add_item;
+      if (rear == MAX - 1)
+            printf("Queue Overflow \n");
+      else
+      {
+            if (front == - 1)
+                  /*If queue is initially empty */
+                  front = 0;
+            printf("\nEnter element : ");
+            scanf("%d", &add_item);
+            printf("\n%d is inserted in queue\n",add_item);
+            printf("------------------------------\n");
+            rear = rear + 1;
+            queue_array[rear] = add_item;
+      }
+}
+void delete()                                                                                                                  // Simple Queue
+{
+      if (front == - 1 || front > rear)
+      {
+            printf("Queue Underflow \n");
+            return ;
+      }
+      else
+      {
+            printf("\nElement deleted from queue is : %d\n", queue_array[front]);
+            printf("------------------------------\n");
+            front = front + 1;
+      }
+}
+void display()
+{
+      int i;
+      if (front == - 1)
+            printf("Queue is empty \n");
+      else
+      {
+            printf("\nQueue is : ");
+            for (i = front; i <= rear; i++)
+                  printf("%d ", queue_array[i]);
+            printf("\n------------------------------");
+            printf("\n");
+      }
+}
+int main()
+{
+      printf("Perform operations on queue\n");
+      printf("------------------------------\n");
+      printf("\tMenu");
+      printf("\n------------------------------\n");
+      printf("1. Insert element \n");
+      printf("2. Delete element \n");
+      printf("3. Display queue\n");
+      printf("4. Exit\n");
+      printf("------------------------------\n");
+      int ch;
+      while (1)
+      {
+            printf("Choose operation : ");
+            scanf("%d", &ch);
+            switch(ch)
+            {
+                  case 1:
+                        insert();
+                        break;
+                  case 2:
+                        delete();
+                        break;
+                  case 3:
+                        display();
+                        break;
+                  case 4:
+                        exit(1);
+                  default:
+                        printf("Invalid operation \n");
+            }
+      }
+      return 0;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Practical 6
+//W.A.P. to implement Circular Queue with insert, delete and display operations
+
+#include <stdio.h>  
+  
+# define max 6  
+int queue[max];  // array declaration  
+int front=-1;  
+int rear=-1;  
+// function to insert an element in a circular queue  
+void enqueue(int element)  
+{  
+    if(front==-1 && rear==-1)   // condition to check queue is empty  
+    {  
+        front=0;  
+        rear=0;  
+        queue[rear]=element;  
+    }  
+    else if((rear+1)%max==front)  // condition to check queue is full  
+    {  
+        printf("Queue is overflow..");  
+    }  
+    else  
+    {  
+        rear=(rear+1)%max;       // rear is incremented  
+        queue[rear]=element;     // assigning a value to the queue at the rear position.  
+    }  
+}  
+                                                                                                                        // Circular Queue
+// function to delete the element from the queue  
+int dequeue()  
+{  
+    if((front==-1) && (rear==-1))  // condition to check queue is empty  
+    {  
+        printf("\nQueue is underflow..");  
+    }  
+ else if(front==rear)  
+{  
+   printf("\nThe dequeued element is %d", queue[front]);  
+   front=-1;  
+   rear=-1;  
+}   
+else  
+{  
+    printf("\nThe dequeued element is %d", queue[front]);  
+   front=(front+1)%max;  
+}  
+}  
+// function to display the elements of a queue  
+void display()  
+{  
+    int i=front;  
+    if(front==-1 && rear==-1)  
+    {  
+        printf("\n Queue is empty..");  
+    }  
+    else  
+    {  
+        printf("\nElements in a Queue are :");  
+        while(i<=rear)  
+        {  
+            printf("%d,", queue[i]);  
+            i=(i+1)%max;  
+        }  
+    }  
+}  
+int main()  
+{  
+    int choice=1,x;   // variables declaration  
+      
+    while(choice<4 && choice!=0)   // while loop  
+    {  
+    printf("\n Press 1: Insert an element");  
+    printf("\nPress 2: Delete an element");  
+    printf("\nPress 3: Display the element");  
+    printf("\nEnter your choice");  
+    scanf("%d", &choice);  
+      
+    switch(choice)  
+    {  
+          
+        case 1:  
+      
+        printf("Enter the element which is to be inserted");  
+        scanf("%d", &x);  
+        enqueue(x);  
+        break;  
+        case 2:  
+        dequeue();  
+        break;  
+        case 3:  
+        display();  
+  
+    }}  
+    return 0;  
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Credits : Vedant Domadiya
