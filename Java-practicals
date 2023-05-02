@@ -645,7 +645,51 @@ class p14 {
 //(salary= salary+0.01 * salary). Calculate gross salary in main class defined in the same package
 
 
-
+//EMPLOYEE CLASS
+package employee;
+import java.util.*;
+public class Employee {
+String name, gender;
+int emp_num;
+Scanner s1 = new Scanner(System.in);
+Employee() {
+System.out.println("Enter name:");
+name = s1.nextLine();
+System.out.println("Enter gender:");
+gender = s1.nextLine();
+System.out.println("Enter emp_num:");
+emp_num = s1.nextInt();
+}
+}
+//SALARIEDEMPLOYEE CLASS
+package employee;
+import java.util.*;
+public class SalariedEmployee extends Employee{
+double salary, hra,da;
+Scanner sc = new Scanner(System.in);
+SalariedEmployee() {
+System.out.println("Enter salary:");
+salary = sc.nextDouble();
+da = 0.05 * salary;
+}
+double allowance() {
+hra = 0.09*salary;
+if (gender == "female")
+hra = 0.1 * salary;
+return (hra + da);
+}
+double increment() {
+return (salary + (0.01 * salary));
+}
+}
+//MAIN CLASS
+package employee;
+public class Main {
+public static void main(String[] args) {
+SalariedEmployee e1 = new SalariedEmployee();
+System.out.println("Gross salary=" + (e1.allowance() + e1.increment()));
+}
+}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -751,4 +795,221 @@ class p17 {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+//Practical lab 10
+
+/*Write a program that takes two files names (source and destination) 
+as command line argument .Copy source file’s content to destination
+file. Use character stream class. Also do same using byte stream and
+buffer stream.*/
+import java.io.*;
+public class p20 {
+public static void main(String[] args) {
+String file1 = args[0];
+String file2 = args[1];
+int read;
+String data;
+byte [] store = new byte[1024];
+//CHARACTER STREAM
+try{
+FileReader input = new FileReader(file1);
+FileWriter output = new FileWriter(file2);
+while((read=input.read())!=-1){
+System.out.println((char)read+" ");
+output.write(read);
+}
+input.close();
+output.close();
+}
+// BUFFER STREAM
+try{
+BufferedReader f1 = new BufferedReader(new FileReader(file1));
+BufferedWriter f2 = new BufferedWriter(new FileWriter(file2));
+while((data = f1.readLine())!=null) {
+f2.write(data);
+System.out.println(data);
+f2.newLine();
+}
+f1.close();
+f2.close();
+}
+//BYTE STREAM
+try{
+InputStream f1 = new FileInputStream(file1) ;
+OutputStream f2 = new FileOutputStream(file2) ;
+while((read = f1.read(store))!=-1){
+String print = new String(store,0,read);
+System.out.print(print);
+f2.write(store,0,read);
+}
+f1.close();
+f2.close();
+}
+catch(Exception e)
+{System.out.println("Error : "+e);}
+}
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//practical lab 10b
+
+Write a program which generates random integers and stores them
+in a file named “rand.dat”. The program then reads the integers
+from the file and displays on the screen.
+import java.io.*;
+import java.util.*;
+public class p20_b {
+public static void main(String[] args) {
+Random random =new Random();
+String data;
+try {
+BufferedWriter w = new BufferedWriter(new FileWriter("rand.dat"));
+BufferedReader r = new BufferedReader(new FileReader("rand.dat"));
+for(int i =0;i<10;i++) {
+int x =random.nextInt(999);
+w.write(x+"");
+w.newLine();
+}
+w.close();
+while((data = r.readLine())!=null)
+{System.out.print(data+" ");}
+}
+catch(Exception e)
+{System.out.println("Error : "+e);}
+}
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//practical Lab 11
+//Write the program that demonstrate the use of Stack, Vector andArrayList classes
+
+//STACK
+import java.util.*;
+public class p21 {
+public static void main(String[] args) {
+Stack<Integer> stack= new Stack<Integer>();
+stack.push(5);
+stack.push(3);
+stack.push(2);
+stack.push(9);
+stack.pop();
+for(int i = (stack.size()-1);i>-1;i--){
+System.out.println(stack.get(i));
+}
+}
+}
+
+//VECTOR
+import java.util.*;
+public class p21_b {
+public static void main(String[] args) {
+Vector <Integer> vector = new Vector<Integer>();
+vector.add(4);
+vector.add(14);
+vector.add(36);
+vector.set(1, 20);
+vector.remove(2);
+for(int i=0;i<vector.size();i++)
+{System.out.println(vector.get(i));}
+}
+}
+
+//ARRAYLIST
+import java.util.*;
+public class p21_c {
+public static void main(String[] args) {
+ArrayList<String> list=new ArrayList<String>();
+list.add("Yug");
+list.add("Div");
+list.add("World");
+for(int i=0;i<list.size();i++) {
+System.out.println(list.get(i));
+}
+}
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// practical lab 12
+
+/*Write a Network program that client sends the data as redius of
+circle to server and server received that data and send the resultant
+area of circle to requested client.*/
+//SERVER
+import java.net.*;
+import java.io.*;
+public class p22server {
+public static void main(String[] args) {
+try{
+ServerSocket s = new ServerSocket(1080);
+System.out.println("Waiting for clint");
+Socket ss = s.accept();
+System.out.println("Client has access");
+BufferedReader data =new BufferedReader(new
+InputStreamReader(ss.getInputStream()) );
+double radius = Double.parseDouble(data.readLine());
+PrintStream out = new PrintStream(ss.getOutputStream());
+out.println((3.14*radius*radius)+"");
+s.close();
+ss.close();
+data.close();
+out.close();
+}
+catch(Exception e) {
+System.out.println("Error : "+e);
+}
+}
+}
+//CLIENT
+import java.io.*;
+import java.net.*;
+public class p22clinet {
+public static void main(String[] args) {
+try{
+Socket s = new Socket(InetAddress.getLocalHost(), 1080);
+BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+System.out.print("Enter radius : ");
+String radius = input.readLine();
+PrintStream ps = new PrintStream(s.getOutputStream());
+ps.println(radius);
+input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+double area = Double.parseDouble(input.readLine());
+System.out.println("Area of circle : "+area);
+s.close();
+input.close();
+ps.close();
+}
+catch(Exception e){
+System.out.println("Error : "+e);
+}
+}
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//practical Lab 13
+//Write a program to count occurrence of character in a string
+import java.util.Scanner;
+class p23 {
+public static void main(String []args) {
+Scanner sc= new Scanner(System.in);
+String mainString = sc.nextLine();
+char [] mainChar = new char[mainString.length()];
+char [] check = new char[mainString.length()];
+mainChar = mainString.toCharArray();
+for(int i=0;i<mainString.length();i++){
+int occur = 0;
+for(int j=0;j<mainString.length();j++){
+if (mainChar[i] ==mainChar[j]) {
+occur++;
+}
+}
+check[i]= mainChar[i];
+System.out.println(mainChar[i]+" occured "+occur);
+}
+}
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // credits : Vedant Domadiya
